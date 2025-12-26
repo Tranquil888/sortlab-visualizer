@@ -31,6 +31,7 @@ interface AppState {
     swaps: number
   }
   isDark: boolean
+  showBarValues: boolean
 }
 
 type AppAction =
@@ -45,6 +46,7 @@ type AppAction =
   | { type: 'RESET' }
   | { type: 'TICK' }
   | { type: 'TOGGLE_THEME' }
+  | { type: 'TOGGLE_SHOW_VALUES' }
 
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
@@ -182,6 +184,9 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, isDark: newIsDark }
     }
 
+    case 'TOGGLE_SHOW_VALUES':
+      return { ...state, showBarValues: !state.showBarValues }
+
     default:
       return state
   }
@@ -215,6 +220,7 @@ function getInitialState(): AppState {
       swaps: 0,
     },
     isDark,
+    showBarValues: false,
   }
 }
 
@@ -260,7 +266,7 @@ function App() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header isDark={state.isDark} onThemeToggle={handleThemeToggle} />
       <div className="container mx-auto px-4 py-6 max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Column - Controls */}
           <div className="lg:col-span-1">
             <ControlsPanel
@@ -269,6 +275,7 @@ function App() {
               arrayType={state.arrayType}
               speed={state.speed}
               isPlaying={state.isPlaying}
+              showBarValues={state.showBarValues}
               onAlgorithmChange={(alg) => dispatch({ type: 'SET_ALGORITHM', payload: alg })}
               onArraySizeChange={(size) => {
                 const clampedSize = Math.max(MIN_ARRAY_SIZE, Math.min(MAX_ARRAY_SIZE, size))
@@ -280,17 +287,21 @@ function App() {
               onStartPause={() => dispatch({ type: state.isPlaying ? 'PAUSE' : 'START' })}
               onStep={() => dispatch({ type: 'STEP' })}
               onReset={() => dispatch({ type: 'RESET' })}
+              onShowBarValuesChange={() => dispatch({ type: 'TOGGLE_SHOW_VALUES' })}
               algorithmOptions={algorithmOptions}
             />
           </div>
 
-          {/* Middle Column - Visualization */}
-          <div className="lg:col-span-1">
-            <VisualizationCanvas array={currentArray} currentStep={currentStep} />
-          </div>
+          {/* Right Column - Visualization and Algorithm Info */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Visualization Canvas */}
+            <VisualizationCanvas
+              array={currentArray}
+              currentStep={currentStep}
+              showBarValues={state.showBarValues}
+            />
 
-          {/* Right Column - Algorithm Info */}
-          <div className="lg:col-span-1">
+            {/* Algorithm Info Panel - Horizontal Layout */}
             <AlgorithmInfoPanel
               algorithm={algorithm}
               comparisons={state.stats.comparisons}

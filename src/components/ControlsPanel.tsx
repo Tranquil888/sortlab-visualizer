@@ -8,6 +8,7 @@ interface ControlsPanelProps {
   arrayType: ArrayType
   speed: number
   isPlaying: boolean
+  showBarValues: boolean
   onAlgorithmChange: (algorithm: AlgorithmId) => void
   onArraySizeChange: (size: number) => void
   onArrayTypeChange: (type: ArrayType) => void
@@ -16,6 +17,7 @@ interface ControlsPanelProps {
   onStartPause: () => void
   onStep: () => void
   onReset: () => void
+  onShowBarValuesChange: () => void
   algorithmOptions: { id: AlgorithmId; name: string }[]
 }
 
@@ -25,6 +27,7 @@ export default function ControlsPanel({
   arrayType,
   speed,
   isPlaying,
+  showBarValues,
   onAlgorithmChange,
   onArraySizeChange,
   onArrayTypeChange,
@@ -33,6 +36,7 @@ export default function ControlsPanel({
   onStartPause,
   onStep,
   onReset,
+  onShowBarValuesChange,
   algorithmOptions,
 }: ControlsPanelProps) {
   return (
@@ -112,6 +116,19 @@ export default function ControlsPanel({
           onChange={(e) => onSpeedChange(parseInt(e.target.value))}
           className="w-full"
         />
+      </div>
+
+      {/* Show Bar Values Toggle */}
+      <div>
+        <label className="flex items-center">
+          <input
+            type="checkbox"
+            checked={showBarValues}
+            onChange={onShowBarValuesChange}
+            className="mr-2"
+          />
+          <span className="text-sm text-gray-700 dark:text-gray-300">Show Bar Values</span>
+        </label>
       </div>
 
       {/* Control Buttons */}

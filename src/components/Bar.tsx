@@ -7,6 +7,7 @@ interface BarProps {
   isPartition?: boolean
   isHeap?: boolean
   width: number
+  showValue?: boolean
 }
 
 export default function Bar({
@@ -18,6 +19,7 @@ export default function Bar({
   isPartition = false,
   isHeap = false,
   width,
+  showValue = false,
 }: BarProps) {
   const height = maxValue > 0 ? (value / maxValue) * 100 : 0
 
@@ -35,17 +37,21 @@ export default function Bar({
   }
 
   return (
-    <div
-      className={`${bgColor} transition-all duration-75 flex items-end justify-center rounded-t text-xs text-gray-800 dark:text-gray-200`}
-      style={{
-        height: `${height}%`,
-        width: `${width}%`,
-        minHeight: '4px',
-      }}
-      title={`Value: ${value}`}
-    >
-      {value > 0 && height > 15 && (
-        <span className="mb-1 text-[10px]">{value}</span>
+    <div className="flex flex-col items-center flex-1 self-stretch" style={{ minWidth: `${width}px`, maxWidth: '100%', height: '100%' }}>
+      <div className="flex-1 w-full flex items-end">
+        <div
+          className={`${bgColor} transition-all duration-75 rounded-t text-xs text-gray-800 dark:text-gray-200 w-full`}
+          style={{
+            height: `${height}%`,
+            minHeight: '4px',
+          }}
+          title={`Value: ${value}`}
+        />
+      </div>
+      {showValue && (
+        <span className="mt-1 text-[10px] text-gray-700 dark:text-gray-300 font-mono whitespace-nowrap flex-shrink-0">
+          {value}
+        </span>
       )}
     </div>
   )
