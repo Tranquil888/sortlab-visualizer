@@ -1,7 +1,7 @@
 # Sorting Algorithm Visualizer
 
 An interactive educational web application that visualizes classic sorting algorithms step-by-step. This tool helps learners understand how each algorithm works internally through animated visualizations.
-
+Video - https://disk.360.yandex.ru/i/y6YQ12LGbeEBYw
 ## Features
 
 - **10 Sorting Algorithms**: Visualize Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort, Heap Sort, Counting Sort, Shell Sort, Radix Sort, and Shaker Sort
